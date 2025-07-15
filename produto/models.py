@@ -50,9 +50,8 @@ class Produto(models.Model):
         
         if self.imagem:
             self.resize_image(self.imagem, max_image_size)
-    
-    def __str__ (self):
-        return self.nome
+    def __str__(self):
+        return f'Produto: {self.nome}'
 
 class Variacao(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
@@ -62,7 +61,7 @@ class Variacao(models.Model):
     estoque = models.IntegerField(default=1)
     
     def __str__(self):
-        return self.nome or self.produto.nome
+        return self.nome or self.produto.name
     
     class Meta:
         verbose_name = 'Variação'
