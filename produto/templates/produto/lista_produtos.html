@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load omfilters %}
 
 {% block titulo %}Lista de Produtos{% endblock %}
 
@@ -7,20 +9,35 @@
             <div class="col-lg-12">
                 <div class="card-columns">
 
-
+                    {% for produto in produtos %}
                     <div class="card">
-                        <img class="card-img-top" src="imgs/squared.jpg" alt="Card image cap">
+
+                        {% if produto.imagem %}
+                        <a href="{{ produto.slug }}">
+                        <img class="card-img-top" src="{{ produto.imagem.url }}"  alt="{{ produto.nome }}">
+                        </a>
+                        {% endif %}
+                        
+                        
                         <div class="card-body">
-                            <h5 class="card-title">Card title that wraps to a new line</h5>
-                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in
-                                to additional content. This content is a little bit longer.</p>
+                            <h5 class="card-title">{{ produto.nome }}</h5>
+                            <p class="card-text">{{ produto.descricao_curta }}</p>
                             <div class="container product-price-block text-center">
-                                <span class="product-price">
-                                    R$ 54,90
-                                </span>
-                                <span class="product-old-price text-muted">
-                                    R$ 99,90
-                                </span>
+                                
+                                {% if produto.preco_marketing_promocional %}
+                                    <span class="product-price">
+                                        {{ produto.preco_marketing_promocional|formata_preco }}
+                                    </span>
+                                    <span class="product-old-price text-muted">
+                                        {{ produto.preco_marketing|formata_preco }}
+                                    </span>
+                                {% else %}
+                                    <span class="product-price">
+                                        R$ {{ produto.preco_marketing|formata_preco }}
+                                    </span>
+                                {% endif %}
+
+
                             </div>
                         </div>
                         <div class="card-footer bg-transparent border-top-light-custom text-center">
@@ -30,6 +47,7 @@
                             </a>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
