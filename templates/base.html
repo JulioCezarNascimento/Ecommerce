@@ -10,7 +10,8 @@
     {% include 'Parciais/_navbar.html' %}
     
     <main class="container mt-4 mb-4">
-       {% block conteudo %}{% endblock %}
+        {%include 'Parciais/_messages.html' %}
+        {% block conteudo %}{% endblock %}
     </main>
     {% include 'Parciais/_footer.html' %}
     {% include 'Parciais/_scripts.html' %}
