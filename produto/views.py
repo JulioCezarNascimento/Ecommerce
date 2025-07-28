@@ -18,9 +18,9 @@ class DetalheProduto(DetailView):
    
 
 
-class AddProduto(View):
+class Adicionar(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse("Página de adicionar produto")
+        return HttpResponse("Esta é a página do carrinho!")
 
 
 class RemoveProduto(View):
