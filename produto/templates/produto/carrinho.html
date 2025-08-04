@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block conteudo %}
+
+<div class="row">
+    <div class="col">
+        <h3>Carrinho de Compras</h3>
+        <p class="lead">Os produtos, quantidades e preços do seu carrinho.</p>
+
+        {% if not variacoes_carrinho %}
+            <div class="alert alert-warning" role="alert">
+                Seu carrinho está vazio.
+            </div>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagem</th>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Preço Unit.</th>
+                        <th scope="col">Qtd.</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for variacao in variacoes_carrinho %}
+                    <tr>
+                        <td>
+                            {% if variacao.produto.imagem %}
+                            <img src="{{ variacao.produto.imagem.url }}" alt="{{ variacao.produto.nome }}" width="50">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'produto:detalhe' variacao.produto.slug %}">
+                                {{ variacao.produto.nome }}
+                            </a>
+                            <br>
+                            <small>{{ variacao.nome }}</small>
+                        </td>
+                        <td>
+                            {% if variacao.preco_promocional > 0 %}
+                                {{ variacao.preco_promocional|formata_preco }}
+                            {% else %}
+                                {{ variacao.preco|formata_preco }}
+                            {% endif %}
+                        </td>
+                        <td>{{ variacao.quantidade_carrinho }}</td>
+                        <td>{{ variacao.preco_quantitativo|formata_preco }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
