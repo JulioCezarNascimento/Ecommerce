@@ -77,8 +77,29 @@ class Adicionar(View):
 
 class RemoveProduto(View):
     def get(self, request, *args, **kwargs):
-        return HttpResponse("Página de remover produto")
+        http_referer = request.META.get(
+            'HTTP_REFERER',
+            reverse('produto:carrinho') 
+        )
 
+        variacao_id = request.GET.get('vid')
+
+        if not variacao_id:
+            return redirect(http_referer)
+
+        if not request.session.get('carrinho'):
+            return redirect(http_referer)
+
+        if variacao_id not in request.session['carrinho']:
+            return redirect(http_referer)
+
+        del request.session['carrinho'][variacao_id]
+        
+        request.session.save()
+        
+        messages.success(request, 'Produto removido do carrinho.')
+        return redirect(http_referer)
+    
 class Carrinho(View):
     """Exibe o carrinho de compras."""
     def get(self, request, *args, **kwargs):
@@ -87,6 +108,8 @@ class Carrinho(View):
 
         variacoes = list(models.Variacao.objects.select_related('produto').filter(id__in=variacao_ids))
 
+        total_carrinho = 0
+        
         for variacao in variacoes:
             vid = str(variacao.id)
             variacao.quantidade_carrinho = carrinho[vid]['quantidade']
@@ -95,8 +118,10 @@ class Carrinho(View):
             preco_unitario = variacao.preco_promocional if variacao.preco_promocional > 0 else variacao.preco
             variacao.preco_quantitativo = preco_unitario * variacao.quantidade_carrinho
 
+            total_carrinho += variacao.preco_quantitativo
         contexto = {
-            'variacoes_carrinho': variacoes
+            'variacoes_carrinho': variacoes,
+            'total_carrinho': total_carrinho,
         }
 
         return render(request, 'produto/carrinho.html', contexto)

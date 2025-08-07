@@ -18,9 +18,9 @@
                     <tr>
                         <th scope="col">Imagem</th>
                         <th scope="col">Produto</th>
-                        <th scope="col">Preço Unit.</th>
                         <th scope="col">Qtd.</th>
                         <th scope="col">Total</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,19 +38,29 @@
                             <br>
                             <small>{{ variacao.nome }}</small>
                         </td>
-                        <td>
-                            {% if variacao.preco_promocional > 0 %}
-                                {{ variacao.preco_promocional|formata_preco }}
-                            {% else %}
-                                {{ variacao.preco|formata_preco }}
-                            {% endif %}
-                        </td>
                         <td>{{ variacao.quantidade_carrinho }}</td>
                         <td>{{ variacao.preco_quantitativo|formata_preco }}</td>
+                        
+                        <td>
+                            <a href="{% url 'produto:removeProduto' %}?vid={{ variacao.id }}"
+                               class="btn btn-danger btn-sm">
+                                Remover
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
+            <div class="row mt-3">
+                <div class="col text-right">
+                    <h4 class="text-primary">
+                        Total do Carrinho: {{ total_carrinho|formata_preco }}
+                    </h4>
+                    <a href="#" class="btn btn-primary btn-lg mt-2">Finalizar Compra</a>
+                </div>
+            </div>
+
         {% endif %}
     </div>
 </div>
