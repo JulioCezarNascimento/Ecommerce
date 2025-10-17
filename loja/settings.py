@@ -35,12 +35,14 @@ INSTALLED_APPS = [
     'produto',
     'pedido',
     'perfil',
+    'profile',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 
     #TODO: Remove debug_toolbar
     'debug_toolbar',

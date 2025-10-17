@@ -106,7 +106,9 @@ class Carrinho(View):
         carrinho = request.session.get('carrinho', {})
         variacao_ids = carrinho.keys()
 
-        variacoes = list(models.Variacao.objects.select_related('produto').filter(id__in=variacao_ids))
+        variacoes = list(getattr(models.Variacao, 'objects')
+                         .select_related('produto')
+                         .filter(id__in=variacao_ids))
 
         total_carrinho = 0
         
