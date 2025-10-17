@@ -17,22 +17,34 @@ class BasePerfil(View):
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
 
-        self.contexto = {
-            'userform': forms.UserForm(
-                data=self.request.POST or None
-            ),
-            'perfilform': forms.ProfileForm(
-                data=self.request.POST or None,
-            )
-        }
-        
+        if self.request.method == 'POST':
+            self.contexto = {
+                'userform': forms.UserForm(
+                    data=self.request.POST or None,
+                    usuario=self.request.user,
+                    instance=self.request.user,
+                ),
+                'perfilform': forms.ProfileForm(
+                    data=self.request.POST or None,
+                )
+            }
+        else:
+            self.contexto = {
+                'userform': forms.UserForm(
+                    data=self.request.POST or None
+                ),
+                'perfilform': forms.ProfileForm(
+                    data=self.request.POST or None,
+                )
+            }
         self.renderizar = render(self.request, self.template_name, self.contexto)
         
     def get(self, *args, **kwargs):
         return self.renderizar
 
 class CriarPerfil(BasePerfil):
-    pass
+    def post(self, *args, **kwargs):
+        return self.renderizar
 class AtualizarPerfil(View):
     def get(self, *args, **kwargs):
         return HttpResponse("Página de atualização de perfil")

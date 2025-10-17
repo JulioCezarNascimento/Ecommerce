@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-
+    'crispy_bootstrap4',
+    
     #TODO: Remove debug_toolbar
     'debug_toolbar',
 ]

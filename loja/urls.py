@@ -17,12 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from perfil import views as perfil_views
+from produto import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('produto.urls')),
     path('perfil/', include('perfil.urls')),
-    path('pedido/', include('pedido.urls'))
+    path('pedido/', include('pedido.urls')),
+    path('', include('produto.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
