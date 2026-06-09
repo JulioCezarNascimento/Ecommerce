@@ -24,7 +24,7 @@ class BasePerfil(View):
                     usuario=self.request.user,
                     instance=self.request.user,
                 ),
-                'perfilform': forms.ProfileForm(
+                'perfilform': forms.PerfilForm(
                     data=self.request.POST or None,
                 )
             }
@@ -33,7 +33,7 @@ class BasePerfil(View):
                 'userform': forms.UserForm(
                     data=self.request.POST or None
                 ),
-                'perfilform': forms.ProfileForm(
+                'perfilform': forms.PerfilForm(
                     data=self.request.POST or None,
                 )
             }
@@ -43,8 +43,26 @@ class BasePerfil(View):
         return self.renderizar
 
 class CriarPerfil(BasePerfil):
-    def post(self, *args, **kwargs):
+    template_name = 'perfil/criar.html'
+
+    def setup(self, *args, **kwargs):
+        super().setup(*args, **kwargs)
+
+        self.contexto = {
+            'userform': forms.UserForm(
+                data=self.request.POST or None
+            ),
+            'perfilform': forms.PerfilForm(
+                data=self.request.POST or None
+            )
+        }
+
+        self.renderizar = render(self.request, self.template_name, self.contexto)
+
+    def get(self, *args, **kwargs):
         return self.renderizar
+
+
 class AtualizarPerfil(View):
     def get(self, *args, **kwargs):
         return HttpResponse("Página de atualização de perfil")
